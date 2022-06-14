@@ -1,13 +1,20 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import Form from "./Form";
 import Alert from "./Alert";
 
+const getListLocalStorage = () => {
+  const data = localStorage.getItem("List");
+  if (data) return JSON.parse(data);
+};
+
 function App() {
   const [nameTask, setNameTask] = useState("");
   const [priority, setPriority] = useState("Low");
-  const [list, setList] = useState([]);
+  const [list, setList] = useState(getListLocalStorage());
   const [alert, setAlert] = useState({ show: false, type: "", msg: "" });
+
+  useEffect(() => localStorage.setItem("List", JSON.stringify(list)), [list]);
 
   const handlerSubmit = function (e) {
     e.preventDefault();
